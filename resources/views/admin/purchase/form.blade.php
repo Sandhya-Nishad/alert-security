@@ -151,7 +151,7 @@
                                             <label> @lang('Total Price')</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">{{ gs('cur_sym') }}</span>
-                                                <input class="form-control total_price" type="number" value="{{ @$purchase->payable_amount }}" required
+                                                <input class="form-control total_price" type="number" value="{{ @$purchase->total_price }}" required
                                                     readonly>
                                             </div>
                                         </div>
@@ -164,6 +164,47 @@
                                                 <span class="input-group-text">{{ gs('cur_sym') }}</span>
                                                 <input class="form-control" name="discount" type="number"
                                                     value="{{ old('discount', getAmount(@$purchase->discount_amount)) }}" step="any">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label> @lang('GST Type')</label>
+                                            <select class="form-control" name="gst_type" id="gst_type">
+                                                <option value="none" @selected((@$purchase->gst_type ?? 'none') === 'none')>@lang('None')</option>
+                                                <option value="igst" @selected((@$purchase->gst_type ?? '') === 'igst')>@lang('IGST (18%)')</option>
+                                                <option value="cgst_sgst" @selected((@$purchase->gst_type ?? '') === 'cgst_sgst')>@lang('CGST + SGST (9% + 9%)')</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>@lang('IGST Amount')</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">{{ gs('cur_sym') }}</span>
+                                                <input class="form-control igst_amount" type="number" value="{{ getAmount(@$purchase->igst_amount) }}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>@lang('CGST Amount')</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">{{ gs('cur_sym') }}</span>
+                                                <input class="form-control cgst_amount" type="number" value="{{ getAmount(@$purchase->cgst_amount) }}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>@lang('SGST Amount')</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">{{ gs('cur_sym') }}</span>
+                                                <input class="form-control sgst_amount" type="number" value="{{ getAmount(@$purchase->sgst_amount) }}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -388,6 +429,10 @@
                 calculateGrandTotal();
             });
 
+            $('#gst_type').on('change', function() {
+                calculateGrandTotal();
+            });
+
             // Remove the product row from table
             $(".productTable").on('click', '.removeBtn', function() {
                 let productId = Number($(this).parents('tr').find('.product_id').val());
@@ -431,13 +476,34 @@
                     total = total + parseFloat($(element).val());
                 });
 
-                var discount = parseFloat($("[name=discount]").val() * 1);
-                $(".total_price").val(total.toFixed(2));
-                var payableAmount = total - discount;
+                var discount = parseFloat($("[name=discount]").val() * 1) || 0;
+                var gstType = $("[name=gst_type]").val();
+                
+                // Calculate GST
+                var igstAmount = 0;
+                var cgstAmount = 0;
+                var sgstAmount = 0;
 
+                if (gstType === 'igst') {
+                    igstAmount = (total * 18) / 100;
+                } else if (gstType === 'cgst_sgst') {
+                    cgstAmount = (total * 9) / 100;
+                    sgstAmount = (total * 9) / 100;
+                }
+
+                var totalGst = igstAmount + cgstAmount + sgstAmount;
+                var payableAmount = total - discount + totalGst;
+                
+                $(".total_price").val(total.toFixed(2));
+                $(".igst_amount").val(igstAmount.toFixed(2));
+                $(".cgst_amount").val(cgstAmount.toFixed(2));
+                $(".sgst_amount").val(sgstAmount.toFixed(2));
                 $(".payable_amount").val(payableAmount.toFixed(2));
+                
                 let payingAmount = $('[name=paid_amount]').val();
-                $(".due_amount").val(payableAmount - payingAmount);
+                if (payingAmount) {
+                    $(".due_amount").val((payableAmount - payingAmount).toFixed(2));
+                }
             }
 
 

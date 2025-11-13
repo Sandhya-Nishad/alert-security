@@ -1,3 +1,4 @@
-Tracking No.,Date,Warehouse,Product Items
-1ICIX5DN,12-07-2024,Test,1 
-31WD5THI,08-07-2024,Warehouse,1 
+Invoice No.,Date,Supplier,Mobile,Total Amount,Warehouse,Discount,GST Type,IGST (18%),CGST (9%),SGST (9%),Payable,Paid,Due
+INV002,13-11-2025,Satyam Maurya,8874461586,₹1000,Dahisar East,₹0,igst,₹180,₹0,₹0,₹1180,₹0,₹1180
+890,13-11-2025,Satyam Maurya,8874461586,₹4400,Kashimira,₹0,cgst_sgst,₹0,₹396,₹396,₹5192,₹0,₹5192
+INV0001,28-07-2025,Satyam Maurya,8874461586,₹1500,Dahisar East,₹10,none,₹0,₹0,₹0,₹1490,₹0,₹1490

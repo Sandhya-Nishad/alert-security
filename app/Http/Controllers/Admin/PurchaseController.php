@@ -53,7 +53,7 @@ class PurchaseController extends Controller
     {
         $filename = "assets/files/csv/example.csv";
         $myFile   = fopen($filename, 'w');
-        $column   = "Invoice No.,Date,Supplier,Mobile,Total Amount,Warehouse,Discount,Payable,Paid,Due\n";
+        $column   = "Invoice No.,Date,Supplier,Mobile,Total Amount,Warehouse,Discount,GST Type,IGST (18%),CGST (9%),SGST (9%),Payable,Paid,Due\n";
         $curSym   = gs('cur_sym');
         foreach ($data as $purchase) {
             $date           = showDateTime(@$purchase->purchase_date, 'd-m-Y');
@@ -62,11 +62,15 @@ class PurchaseController extends Controller
             $totalAmount    = $curSym . getAmount($purchase->total_price);
             $warehouse      = $purchase->warehouse->name;
             $discount       = $curSym . getAmount($purchase->discount_amount);
+            $gstType        = $purchase->gst_type ?? 'none';
+            $igstAmount     = $curSym . getAmount($purchase->igst_amount ?? 0);
+            $cgstAmount     = $curSym . getAmount($purchase->cgst_amount ?? 0);
+            $sgstAmount     = $curSym . getAmount($purchase->sgst_amount ?? 0);
             $payable        = $curSym . getAmount($purchase->payable_amount);
             $paid           = $curSym . getAmount($purchase->paid_amount);
             $due            = $curSym . getAmount($purchase->due_amount);
 
-            $column .= "$purchase->invoice_no,$date,$supplier,$supplierMobile,$totalAmount,$warehouse,$discount,$payable,$paid,$due \n";
+            $column .= "$purchase->invoice_no,$date,$supplier,$supplierMobile,$totalAmount,$warehouse,$discount,$gstType,$igstAmount,$cgstAmount,$sgstAmount,$payable,$paid,$due\n";
         }
         fwrite($myFile, $column);
         $headers = [

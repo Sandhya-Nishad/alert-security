@@ -64,13 +64,18 @@ class ZoneController extends Controller
             $zone->save();
         }
 
-        // handle sitename(s) - allow multiple lines
+        // handle sitename(s) - use comma as delimiter
         if ($request->filled('sitename')) {
-            $lines = preg_split('/\r?\n/', $request->sitename);
-            foreach ($lines as $line) {
-                $name = trim($line);
+            // First, delete existing sites for this zone (if editing)
+            if ($id) {
+                \App\Models\Site::where('zone_id', $zone->id)->delete();
+            }
+            
+            $sites = array_map('trim', explode(',', $request->sitename));
+            foreach ($sites as $site) {
+                $name = trim($site);
                 if ($name) {
-                    \App\Models\Site::updateOrCreate([
+                    \App\Models\Site::create([
                         'zone_id' => $zone->id,
                         'name' => $name,
                     ]);

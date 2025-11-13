@@ -113,20 +113,20 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>@lang('Name') <span class="text-danger">*</span></label>
+                                    <label>@lang('Name')</label>
                                     <input type="text" name="name" class="form-control" autocomplete="off" value="{{ old('name') }}" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label">@lang('Email') <span class="text-danger">*</span></label>
+                                    <label class="form-label">@lang('Email')</label>
                                     <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label">@lang('Mobile') <span class="text-danger">*</span>
+                                    <label class="form-label">@lang('Mobile')
                                         <i class="fa fa-info-circle text--primary" title="@lang('Type the mobile number including the country code. Otherwise, SMS won\'t send to that number.')"></i>
                                     </label>
                                     <input type="number" name="mobile" value="{{ old('mobile') }}" class="form-control" required>
@@ -136,13 +136,13 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>@lang('Address')</label>
-                                    <input type="text" name="address" class="form-control" value="{{ old('address') }}">
+                                    <input type="text" name="address" class="form-control" value="{{ old('address') }}" required>
                                 </div>
                             </div>
                             
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>@lang('Zone') <span class="text-danger">*</span></label>
+                                    <label>@lang('Zone')</label>
                                     <select name="zone_id" id="zoneSelect" class="form-control" required>
                                         <option value="">@lang('Select Zone')</option>
                                         @foreach($zones ?? [] as $zone)
@@ -156,7 +156,7 @@
                             
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>@lang('Site Name') <span class="text-danger">*</span></label>
+                                    <label>@lang('Site Name')</label>
                                     <select name="site_id" id="siteSelect" class="form-control" required>
                                         <option value="">@lang('Select Site')</option>
                                     </select>

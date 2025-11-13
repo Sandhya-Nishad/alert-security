@@ -175,8 +175,8 @@
                         
                         <div class="form-group">
                             <label>@lang('Site Name(s)')</label>
-                            <textarea class="form-control" name="sitename" rows="3" placeholder="@lang('Enter one site name per line')">{{ old('sitename') }}</textarea>
-                            <small class="text-muted">@lang('You can add multiple site names separated by new lines. Each will be created under this zone.')</small>
+                            <textarea class="form-control" name="sitename" rows="3" placeholder="@lang('e.g., Site 1, Site 2, Site 3')" required>{{ old('sitename') }}</textarea>
+                            <small class="text-muted">@lang('Enter multiple site names separated by commas. Each site will be created under this zone.')</small>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -297,9 +297,9 @@
                         form.find('input[name="name"]').val(resource.name);
                         form.find('input[name="address"]').val(resource.address);
                         
-                        // If zone has sites, show them
+                        // If zone has sites, show them separated by commas
                         if (resource.sites && resource.sites.length > 0) {
-                            const siteNames = resource.sites.map(site => site.name).join('\n');
+                            const siteNames = resource.sites.map(site => site.name).join(', ');
                             form.find('textarea[name="sitename"]').val(siteNames);
                         } else {
                             form.find('textarea[name="sitename"]').val('');

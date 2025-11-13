@@ -55,6 +55,22 @@
                 <p class="float-right">{{ showAmount($purchase->discount_amount) }}</p>
             </div>
 
+            @if ($purchase->gst_type === 'igst')
+                <div class="border-bottom clearfix">
+                    <p class="float-left">@lang('IGST (18%)')</p>
+                    <p class="float-right">{{ showAmount($purchase->igst_amount) }}</p>
+                </div>
+            @elseif ($purchase->gst_type === 'cgst_sgst')
+                <div class="border-bottom clearfix">
+                    <p class="float-left">@lang('CGST (9%)')</p>
+                    <p class="float-right">{{ showAmount($purchase->cgst_amount) }}</p>
+                </div>
+                <div class="border-bottom clearfix">
+                    <p class="float-left">@lang('SGST (9%)')</p>
+                    <p class="float-right">{{ showAmount($purchase->sgst_amount) }}</p>
+                </div>
+            @endif
+
             <div class="border-bottom clearfix">
                 <p class="float-left">@lang('Grand Total')</p>
                 <p class="float-right">{{ showAmount($purchase->payable_amount) }}</p>

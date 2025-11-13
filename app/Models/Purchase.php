@@ -9,6 +9,24 @@ class Purchase extends Model
 {
     use ActionTakenBy;
 
+    protected $fillable = [
+        'supplier_id',
+        'invoice_no',
+        'warehouse_id',
+        'purchase_date',
+        'total_price',
+        'discount_amount',
+        'igst_amount',
+        'cgst_amount',
+        'sgst_amount',
+        'gst_type',
+        'payable_amount',
+        'paid_amount',
+        'due_amount',
+        'note',
+        'return_status',
+    ];
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
